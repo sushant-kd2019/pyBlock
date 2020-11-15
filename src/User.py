@@ -33,6 +33,13 @@ class User:
         else:
             return dump("0","account balance is not enough")
     
+    #getter functions
+    def get_name(self):
+        return self.name
+    
+    def get_balance(self):
+        return self.account_balance
+    
 
     #transaction functions
     def send_token(self, amount, reciever, message):
