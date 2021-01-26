@@ -1,6 +1,11 @@
 from Block import Block
 from Transaction import Transaction
-from Utility import dump, hsh
+from Utility import dump, hsh, obj_dumps
+from flask import Flask
+from uuid import uuid4
+from flask.json import jsonify
+
+# ----------------------------------------------------------------------
 
 
 class Blockchain(object):
@@ -27,8 +32,7 @@ class Blockchain(object):
             proof += 1
         return proof
 
-
-# ---------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     difficulty = 3
 
     @staticmethod
@@ -47,3 +51,37 @@ class Blockchain(object):
     @staticmethod
     def get_last_block_no(self):
         return len(self.blockchain)
+# ----------------------------------------------------------------------
+
+
+# creating an API for blockchain.
+app = Flask(__name__)
+
+node_id = str(uuid4()).replace('-', '')
+
+blockchain = Blockchain()
+
+
+@app.route('/mine', methods=['GET'])
+def mine():
+    return "block mined"
+
+
+@app.route('/transaction/new', methods=['POST'])
+def new_transaction():
+    return "A new transaction added."
+
+
+@app.route('/chain', methods=['GET'])
+def get_blockchain():
+    response = {
+        'chain': obj_dumps(blockchain.blockchain),
+        'length': len(blockchain.blockchain)
+    }
+    return jsonify(response), 200
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+
+# ----------------------------------------------------------------------

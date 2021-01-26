@@ -14,3 +14,8 @@ def dump(code, msg):
 def hsh(obj):
     ans = hashlib.sha256(obj.encode()).hexdigest()
     return str(ans)
+
+
+def obj_dumps(obj):
+    return json.dumps(
+        obj, default=lambda o: o.__dict__, sort_keys=True, indent=4)

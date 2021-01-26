@@ -1,6 +1,7 @@
 import json
 import User
 
+
 class Miner(User):
 
     def validate_tx(self):
@@ -14,7 +15,3 @@ class Miner(User):
 
     def add_block(self):
         pass
-
-
-
-
