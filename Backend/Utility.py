@@ -19,3 +19,10 @@ def hsh(obj):
 def obj_dumps(obj):
     return json.dumps(
         obj, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+
+def confirm_data(ar):
+    for i in ar.keys():
+        if ar[i] == "" and i != "message":
+            return False
+    return True

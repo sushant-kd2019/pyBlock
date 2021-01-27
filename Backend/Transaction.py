@@ -13,7 +13,6 @@ class Transaction:
         self.reciever = reciever
         self.message = message
         self.timestamp = get_now()
-#        self.txhash = hsh(tuple(self.amount, self.sender, self.reciever, self.message, self.timestamp))
         self.txhash = hsh(json.dumps(
             self, default=lambda o: o.__dict__, sort_keys=True, indent=4))
 

@@ -1,17 +1,52 @@
-import json
-import User
+from Transaction import Transaction
+from flask import Flask, request
+from Blockchain import Blockchain
+from Utility import obj_dumps, confirm_data, dump
+from flask.json import jsonify
+from uuid import uuid4
 
 
-class Miner(User):
+# creating an API for blockchain.
+app = Flask(__name__)
 
-    def validate_tx(self):
-        pass
+node_id = str(uuid4()).replace('-', '')
 
-    def gather_tx(self):
-        pass
+blockchain = Blockchain()
 
-    def broadcast_block(self):
-        pass
 
-    def add_block(self):
-        pass
+@app.route('/mine', methods=['GET'])
+def mine():
+    last_block = blockchain.blockchain[-1]
+    last_proof, last_block_no = last_block.proof, last_block.block_no
+    proof = blockchain.consensus()
+    if Blockchain.validate_pow(last_proof, proof):
+        blockchain.add_block(proof)
+        return dump("1", "block number")
+    else:
+        return dump('0', "mining failed")
+
+
+@app.route('/transaction/new', methods=['POST'])
+def new_transaction():
+    ar = request.get_json()
+    if confirm_data(ar):
+        response = blockchain.add_transaction(
+            ar['amount'], ar['sender'], ar['reciever'], ar['message'])
+    else:
+        response = dump("0", "Transaction incomplete. Check your input.")
+    return jsonify(response)
+
+
+@app.route('/chain', methods=['GET'])
+def get_blockchain():
+    response = {
+        'chain': obj_dumps(blockchain.blockchain),
+        'length': len(blockchain.blockchain)
+    }
+    return jsonify(response)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+
+# ----------------------------------------------------------------------
