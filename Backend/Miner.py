@@ -45,8 +45,19 @@ def get_blockchain():
     }
     return response
 
+@app.route('/inc_diff',methods=['GET'])
+def increase_difficulty():
+    response = Blockchain.increase_difficulty()
+    return response
+
+@app.route('/dec_diff',methods=['GET'])
+def decrease_difficulty():
+    response = Blockchain.decrease_difficulty()
+    return response
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+
 
 # ----------------------------------------------------------------------

@@ -1,6 +1,6 @@
 from Block import Block
 from Transaction import Transaction
-from Utility import dump, hsh, obj_dumps
+from Utility import dump, hsh
 # ----------------------------------------------------------------------
 
 
@@ -44,11 +44,16 @@ class Blockchain(object):
     @staticmethod
     def increase_difficulty():
         Blockchain.difficulty += 1
+        return dump('1',"difficulty increased by 1. New difficulty: "+str(Blockchain.difficulty))
 
     @staticmethod
     def decrease_difficulty():
-        Blockchain.difficulty -= 1
-
+        if Blockchain.difficulty>=2:
+            Blockchain.difficulty -= 1
+            return dump('1',"difficulty decreased by 1. New difficulty: "+str(Blockchain.difficulty))
+        else:
+            return dump('0','Not possible to decrease difficulty. Lower limit reached.')
+    
     @staticmethod
     def validate_pow(last_proof, proof):
         trial_hash = hsh("%d%d" % (proof, last_proof))
