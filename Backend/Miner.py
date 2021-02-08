@@ -18,7 +18,7 @@ blockchain = Blockchain()
 def mine():
     last_block = blockchain.blockchain[-1]
     last_proof, last_block_no = last_block.proof, last_block.block_no
-    proof = blockchain.consensus()
+    proof = blockchain.calculate_proof()
     if Blockchain.validate_pow(last_proof, proof):
         blockchain.add_block(proof)
         return dump("1", "block number: "+str(last_block_no))
@@ -54,6 +54,36 @@ def increase_difficulty():
 def decrease_difficulty():
     response = Blockchain.decrease_difficulty()
     return response
+
+@app.route('/node/register', methods=['POST'])
+def register_node():
+    values = request.get_json()
+    nodes = values.get('nodes')
+    if nodes is None:
+        return dump('0','list of nodes is invalid')
+    for node in nodes:
+        blockchain.add_node(node)
+    response = {
+        'code':'1',
+        'message':'nodes added successfully',
+        'total_nodes': list(blockchain.nodes)
+    }
+    return jsonify(response)
+
+@app.route('/node/resolve', methods = ['GET'])
+def consensus():
+    replaced = blockchain.consensus()
+    if replaced:
+        response = {
+            'message' : 'Chain has been replaced',
+            'chain' : blockchain.blockchain
+        }
+    else:
+        response = {
+            'message' : 'Chain is already authoritative',
+            'chain' : blockchain.blockchain
+        }
+    return jsonify(response)
 
 
 if __name__ == "__main__":
