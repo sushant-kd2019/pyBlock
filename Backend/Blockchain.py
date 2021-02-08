@@ -10,12 +10,12 @@ class Blockchain(object):
         self.transaction_queue = []
 
         # initiate the first block.
-        b = Block(prev_hash=1, proof=100, tx_list=[])
+        b = Block(self,prev_hash=1, proof=100, tx_list=[])
         self.blockchain.append(b)
 
     def add_block(self, proof):
         last_block = self.blockchain[-1]
-        b = Block(prev_hash=last_block.block_hash,
+        b = Block(self,prev_hash=last_block.block_hash,
                   proof=proof, tx_list=self.transaction_queue)
         self.blockchain.append(b)
         return dump("1", "Block created and added to blockchain.")
@@ -27,7 +27,7 @@ class Blockchain(object):
 
     def consensus(self):
         proof = 0
-        last_proof = self.get_last_block['proof']
+        last_proof = self.get_last_block().proof
         while not Blockchain.validate_pow(last_proof, proof):
             proof += 1
         return proof
@@ -52,6 +52,6 @@ class Blockchain(object):
     @staticmethod
     def validate_pow(last_proof, proof):
         trial_hash = hsh("%d%d" % (proof, last_proof))
-        return trial_hash[difficulty*(-1):] == "0"*difficulty
+        return trial_hash[Blockchain.difficulty*(-1):] == "0"*Blockchain.difficulty
 
 # ----------------------------------------------------------------------

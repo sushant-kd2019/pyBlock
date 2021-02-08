@@ -21,7 +21,7 @@ def mine():
     proof = blockchain.consensus()
     if Blockchain.validate_pow(last_proof, proof):
         blockchain.add_block(proof)
-        return dump("1", "block number")
+        return dump("1", "block number: "+str(last_block_no))
     else:
         return dump('0', "mining failed")
 
@@ -41,9 +41,9 @@ def new_transaction():
 def get_blockchain():
     response = {
         'chain': obj_dumps(blockchain.blockchain),
-        'length': len(blockchain.blockchain)
+        'length': blockchain.get_last_block_no()
     }
-    return jsonify(response)
+    return response
 
 
 if __name__ == "__main__":

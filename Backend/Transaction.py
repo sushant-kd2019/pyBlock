@@ -5,6 +5,11 @@ from Utility import get_now, hsh
 
 class Transaction:
     tx_no = 0
+    @staticmethod
+    def tx_index():
+        Transaction.tx_no += 1
+        return Transaction.tx_no
+
 
     def __init__(self, amount, sender, reciever, message=None):
         self.index = Transaction.tx_index()
@@ -16,7 +21,3 @@ class Transaction:
         self.txhash = hsh(json.dumps(
             self, default=lambda o: o.__dict__, sort_keys=True, indent=4))
 
-        @staticmethod
-        def tx_index(self):
-            Transaction.tx_no += 1
-            return Transaction.tx_no

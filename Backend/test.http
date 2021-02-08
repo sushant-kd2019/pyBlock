@@ -1,0 +1,11 @@
+POST http://0.0.0.0:5000/transaction/new HTTP/1.1
+content-type: application/json
+
+{
+ "sender": "d4ee26eee15148ee92c6cd394edd974e",
+ "reciever": "other-address",
+ "amount": 1234,
+ "message": "hello world transaction no 2"
+}
+# GET http://0.0.0.0:5000/chain
+# GET http://0.0.0.0:5000/mine

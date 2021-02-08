@@ -15,7 +15,7 @@ class User:
     # setter functions
     def set_name(self, current_password, new_name):
         if self.password == current_password:
-            self.name = name
+            self.name = new_name
             return dump("1", "name has been reset")
         else:
             return dump("0", "current password is wrong")
