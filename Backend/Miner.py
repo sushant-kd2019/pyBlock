@@ -4,7 +4,8 @@ from Blockchain import Blockchain
 from Utility import obj_dumps, confirm_data, dump
 from flask.json import jsonify
 from uuid import uuid4
-
+from sys import argv
+import json
 
 # creating an API for blockchain.
 app = Flask(__name__)
@@ -40,20 +41,20 @@ def new_transaction():
 @app.route('/chain', methods=['GET'])
 def get_blockchain():
     response = {
-        'chain': obj_dumps(blockchain.blockchain),
+        'chain': [json.dumps(i,lambda x: x.__dict__, sort_keys=True) for i in blockchain.blockchain ],
         'length': blockchain.get_last_block_no()
     }
-    return response
+    return jsonify(response)
 
-@app.route('/inc_diff',methods=['GET'])
-def increase_difficulty():
-    response = Blockchain.increase_difficulty()
-    return response
+# @app.route('/inc_diff',methods=['GET'])
+# def increase_difficulty():
+#     response = Blockchain.increase_difficulty()
+#     return response
 
-@app.route('/dec_diff',methods=['GET'])
-def decrease_difficulty():
-    response = Blockchain.decrease_difficulty()
-    return response
+# @app.route('/dec_diff',methods=['GET'])
+# def decrease_difficulty():
+#     response = Blockchain.decrease_difficulty()
+#     return response
 
 @app.route('/node/register', methods=['POST'])
 def register_node():
@@ -66,7 +67,7 @@ def register_node():
     response = {
         'code':'1',
         'message':'nodes added successfully',
-        'total_nodes': list(blockchain.nodes)
+        'total_nodes': list(blockchain.node_list)
     }
     return jsonify(response)
 
@@ -87,7 +88,8 @@ def consensus():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    port = argv[1]
+    app.run(host='0.0.0.0', port=port)
 
 
 # ----------------------------------------------------------------------

@@ -11,3 +11,27 @@
 # GET http://0.0.0.0:5000/mine
 # GET http://0.0.0.0:5000/inc_diff
 # GET http://0.0.0.0:5000/dec_diff
+
+
+# POST http://0.0.0.0:5001/transaction/new HTTP/1.1
+# content-type: application/json
+
+# {
+#  "sender": "edd974e",
+#  "reciever": "random address",
+#  "amount": 156432,
+#  "message": "hello world transaction no 3"
+# }
+# GET http://0.0.0.0:5001/chain
+# GET http://0.0.0.0:5001/mine
+# GET http://0.0.0.0:5001/inc_diff
+# GET http://0.0.0.0:5001/dec_diff
+
+# POST http://0.0.0.0:5001/node/register HTTP/1.1
+# Content-Type: application/json
+
+# {
+#     "nodes": ["http://0.0.0.0:5000/"]
+# }
+
+# GET http://0.0.0.0:5001/node/resolve

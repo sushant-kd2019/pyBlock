@@ -10,5 +10,6 @@ class Block:
         self.prev_hash = prev_hash
         self.tx_list = tx_list
         self.timestamp = get_now()
-        self.block_hash = hsh(obj_dumps(self))
         self.proof = proof
+        self.block_hash = hsh(obj_dumps(self))
+        

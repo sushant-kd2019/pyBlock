@@ -1,6 +1,7 @@
+from flask import json
 from Block import Block
 from Transaction import Transaction
-from Utility import dump, hsh
+from Utility import dump, hsh, hash_removed_obj
 from urllib.parse import urlparse
 import requests
 # ----------------------------------------------------------------------
@@ -18,17 +19,17 @@ class Blockchain(object):
 
     def add_node(self,address):
         url = urlparse(address)
-        self.node_list.add(url.netloc())
+        self.node_list.add(url.netloc)
 
     def validate_chain(self, chain):
-        last_block = chain[0]
+        last_block = json.loads(chain[0])
         for i in range(1,len(chain)):
-            b = chain[i]
-            if b['prev_hash'] != hsh[last_block]:
+            b =json.loads(chain[i])
+            if b['prev_hash'] != hash_removed_obj[last_block]:
                 return False
             if not Blockchain.validate_pow(last_block['proof'],b['proof']):
                 return False
-            last_block = chain[i]
+            last_block = b
         return True
     
     def consensus(self):
