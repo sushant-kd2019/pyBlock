@@ -40,8 +40,14 @@ def new_transaction():
 
 @app.route('/chain', methods=['GET'])
 def get_blockchain():
+    ch = blockchain.blockchain
+    ar=[]
+    for i in ch:
+        ar.append(obj_dumps(i))
+
     response = {
-        'chain': [json.dumps(i,lambda x: x.__dict__, sort_keys=True) for i in blockchain.blockchain ],
+#        'chain': [json.dumps(i,lambda x: x.__dict__, sort_keys=True) for i in blockchain.blockchain ],
+        'chain' : ar,
         'length': blockchain.get_last_block_no()
     }
     return jsonify(response)

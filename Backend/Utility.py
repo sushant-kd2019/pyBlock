@@ -30,6 +30,13 @@ def hash_removed_obj(obj):
     dic.pop('block_hash')
     return hsh(json.dumps(dic,sort_keys=True))
 
+def object_to_jsonstring_list(obj_list):
+    tmp_list = []
+    for i in obj_list:
+        tmp_list.append(obj_dumps(i))
+    return tmp_list
+
+
 
 # class New:
 #     def __init__(self):
